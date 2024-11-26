@@ -1,29 +1,30 @@
 package com.sangle.example.filter;
 
 import jakarta.servlet.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import jakarta.servlet.annotation.WebFilter;
 
 import java.io.IOException;
 
 
-public class CustomFilter implements Filter {
+@WebFilter(filterName = "standardFilter", urlPatterns = "/*")
+public class StandardFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        System.err.println("CustomFilter.init");
+        System.err.println("StandardFilter.init");
         Filter.super.init(filterConfig);
     }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-        System.err.println("CustomFilter.doFilter");
+        System.err.println("StandardFilter.doFilter");
+        chain.doFilter(request, response);
     }
 
     @Override
     public void destroy() {
-        System.err.println("CustomFilter.destroy");
+        System.err.println("StandardFilter.destroy");
         Filter.super.destroy();
     }
 }

@@ -9,7 +9,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/ComponentScan" />
+            <option value="$PROJECT_DIR$/filter-demo" />
           </set>
         </option>
       </GradleProjectSettings>
