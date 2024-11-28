@@ -11,12 +11,17 @@ repositories {
     mavenCentral()
 }
 
+ext {
+    jvmArgs = ['-Dspring.profiles.active=dev']
+}
+
 dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.security:spring-security-core'
 }
 
 test {
