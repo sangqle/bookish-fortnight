@@ -5,14 +5,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api")
 public class UserController {
-    @GetMapping("")
-    public String getUser() {
-        return "User";
-    }
-    @GetMapping("/custom")
-    public String getCustom() {
-        return "Custom";
+    @GetMapping("/users")
+    public String getUsers() {
+        return "Return list of user";
     }
 }
