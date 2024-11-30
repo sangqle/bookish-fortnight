@@ -1,12 +1,13 @@
 package com.sangle.example.filter;
 
 import jakarta.servlet.*;
-import jakarta.servlet.annotation.WebFilter;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
 
-@WebFilter(filterName = "standardFilter", urlPatterns = "/*")
+//@WebFilter(filterName = "standardFilter", urlPatterns = "/*")
+@Component
 public class StandardFilter implements Filter {
 
     @Override
