@@ -1,7 +1,9 @@
 package com.sangle.example.configuration;
 
+import com.sangle.example.filter.JWTAuthFilter;
 import com.sangle.example.filter.JWTAuthorizationFilter;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -10,11 +12,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 public class WebSecurityConfig {
-    private final JWTAuthorizationFilter jwtAuthorizationFilter;
-
-    public WebSecurityConfig(JWTAuthorizationFilter customAuthenticationFilter) {
-        this.jwtAuthorizationFilter = customAuthenticationFilter;
-    }
+    @Autowired
+    JWTAuthFilter jwtAuthFilter;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -22,7 +21,7 @@ public class WebSecurityConfig {
             authorizeRequests.requestMatchers("/api/**").authenticated().anyRequest().permitAll();
 
         });
-        http.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         http.exceptionHandling(exception -> exception.authenticationEntryPoint((request, response, authException) -> {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("Custom 401: Authentication required!");

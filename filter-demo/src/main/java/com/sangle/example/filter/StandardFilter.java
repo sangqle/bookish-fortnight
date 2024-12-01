@@ -1,12 +1,9 @@
 package com.sangle.example.filter;
 
 import jakarta.servlet.*;
-import jakarta.servlet.annotation.WebFilter;
 
 import java.io.IOException;
 
-
-@WebFilter(filterName = "standardFilter", urlPatterns = "/*")
 public class StandardFilter implements Filter {
 
     @Override
