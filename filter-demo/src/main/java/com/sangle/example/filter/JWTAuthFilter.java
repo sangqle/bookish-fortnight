@@ -4,20 +4,13 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
+import org.springframework.web.filter.GenericFilterBean;
 
 import java.io.IOException;
 import java.util.List;
 
-@Component
-public class JWTAuthFilter implements Filter {
-
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-        System.err.println("JWTAuthFilter initialized");
-    }
+public class JWTAuthFilter extends GenericFilterBean {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -47,15 +40,12 @@ public class JWTAuthFilter implements Filter {
             String username = validateAndExtractUsername(token);
 
             // Set authentication in the SecurityContext if valid
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-            System.out.println("Authentication: " + (authentication != null ? authentication.getName() : "null"));
-
-            SecurityContextHolder.getContext().setAuthentication(
-                    new UsernamePasswordAuthenticationToken(username, null, List.of())
-            );
-
-
+            if (SecurityContextHolder.getContext().getAuthentication() == null) {
+                SecurityContextHolder.getContext().setAuthentication(
+                        new UsernamePasswordAuthenticationToken(username, null, List.of())
+                );
+            }
         } catch (Exception e) {
             httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             httpResponse.getWriter().write("Invalid Token");
@@ -63,11 +53,6 @@ public class JWTAuthFilter implements Filter {
         }
         // Continue to the next filter
         chain.doFilter(request, response);
-    }
-
-    @Override
-    public void destroy() {
-        System.out.println("JWTAuthFilter destroyed");
     }
 
     private String validateAndExtractUsername(String token) throws Exception {
