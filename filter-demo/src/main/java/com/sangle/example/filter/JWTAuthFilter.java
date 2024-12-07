@@ -5,26 +5,21 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 
 import java.io.IOException;
 import java.util.List;
 
+@Component
 public class JWTAuthFilter extends GenericFilterBean {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
 
-        if (request instanceof HttpServletRequest httpRequest) {
-            System.err.println("Filter executed for: " + httpRequest.getRequestURI() + " " + httpRequest.getMethod());
-            System.err.println("DispatcherType: " + httpRequest.getDispatcherType());
-        }
-
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
-
-        System.err.println("JWTAuthFilter invoked");
 
         // Extract Authorization header
         String authHeader = httpRequest.getHeader("Authorization");
