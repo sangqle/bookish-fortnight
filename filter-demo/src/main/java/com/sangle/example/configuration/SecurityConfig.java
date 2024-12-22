@@ -13,32 +13,20 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 @Configuration
-@EnableWebSecurity
 public class SecurityConfig {
 
-//    @Autowired
-//    JWTAuthorizationFilter authorizationFilter;
-
-    // SecurityFilterChain0 for /api/**
-//    @Bean
-//    public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
-//        http
-//                .securityMatcher("/api/**") // Match URLs starting with /api/**
-//                .authorizeHttpRequests(auth -> auth
-//                        .anyRequest().authenticated() // All requests must be authenticated
-//                ).addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class); // Add JWTAuthorizationFilter before SecurityFilterChain
-//
-//        System.err.println("SecurityFilterChain0 applied for /api/**");
-//        return http.build();
-//    }
-
-    // SecurityFilterChainn for other requests
     @Bean
-    public SecurityFilterChain defaultFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
-
-        http.csrf((csrf) -> csrf.ignoringRequestMatchers("/api/*"));
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/private-data").authenticated() // Only authenticated users can access
+                        .anyRequest().permitAll() // Allow access to everything else
+                )
+                .httpBasic(Customizer.withDefaults()) // Enable HTTP Basic for authentication
+                .csrf(csrf -> csrf.disable()); // Disable CSRF for simplicity in the demo
 
         return http.build();
     }

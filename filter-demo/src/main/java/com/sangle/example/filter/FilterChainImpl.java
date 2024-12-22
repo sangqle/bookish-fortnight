@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.util.Iterator;
 
-@Component
+//@Component
 public class FilterChainImpl implements FilterChain {
     private Iterator<Filter> filters;
 

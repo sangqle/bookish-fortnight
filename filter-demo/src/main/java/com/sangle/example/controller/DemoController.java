@@ -1,25 +1,25 @@
 package com.sangle.example.controller;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 
+@CrossOrigin(origins = "https://viblo.asia") // Allow requests from this origin
 @RestController
-@RequestMapping("/demo")
+@RequestMapping("/api")
 public class DemoController {
 
-    @GetMapping("/request")
-    public void handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/demo/forward").forward(request, response);
+    @GetMapping("/public-data")
+    public String publicData() {
+        return "This is public data";
     }
 
-    @GetMapping("/forward")
-    public String handleForward() {
-        return "Forwarded Response";
+    @GetMapping("/private-data")
+    public String privateData(Authentication authentication) {
+        return "This is private data for: " + authentication.getName();
     }
 }

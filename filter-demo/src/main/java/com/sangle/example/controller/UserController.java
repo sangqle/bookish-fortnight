@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api")
 public class UserController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
-
 
     @GetMapping("/users")
     public List<String> getUsers(Authentication authentication) {
